@@ -3,12 +3,21 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
-
+const loader = document.getElementById('loader');
 let apiQuotes = [];
+
+function showLoadingSpinner() {
+	quoteContainer.hidden = true;
+	loader.hidden = false;
+}
+function completeLoading() {
+	quoteContainer.hidden = false;
+	loader.hidden = true;
+}
 
 // Get quotes from API
 async function getQuotes() {
-
+	showLoadingSpinner();
 // Show new quote
 function newQuote() {
 	//pick random quote from array
@@ -19,15 +28,14 @@ function newQuote() {
 	} else {
 		authorText.textContent = quote.author;
 	}
-
 	// check quote length to add styling
 	if (quote.text.length > 100) {
 		quoteText.classList.add('long-quote');
 	} else {
 		quoteText.classList.remove('long-quote');
 	}
-
 	quoteText.textContent = quote.text;
+	completeLoading();
 }
 	const apiUrl = 'https://type.fit/api/quotes';
 	try {
@@ -38,7 +46,6 @@ function newQuote() {
 		console.log(error);
 	}
 }
-
 // tweet quote
 function tweetQuote() {
 	const twitterUrl = `https://twitter.com/intent/tweet?text=${quoteText.textContent} - ${authorText.textContent}`;
